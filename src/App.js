@@ -11,11 +11,11 @@ function App() {
         <Route path="/products" exact>
           <ProductList />
         </Route>
-        <Route path="/products/:slug">
+        <Route path="/product/:id">
           <ProductDetail />
         </Route>
         <Route path="/" exact>
-          <Landing />
+          <ProductList />
         </Route>
       </Switch>
     </Template>

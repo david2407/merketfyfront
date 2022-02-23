@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import Product from "./Product";
 import ProductH from "./ProductH";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ScrollToTopOnMount from "../template/ScrollToTopOnMount";
+import { useFetchProductList } from "../hooks";
 
 const categories = [
   "All Products",
@@ -18,7 +19,7 @@ const brands = ["Apple", "Samsung", "Google", "HTC"];
 
 const manufacturers = ["HOCO", "Nillkin", "Remax", "Baseus"];
 
-function FilterMenuLeft() {
+const FilterMenuLeft = () => {
   return (
     <ul className="list-group list-group-flush rounded">
       <li className="list-group-item d-none d-lg-block">
@@ -94,10 +95,11 @@ function FilterMenuLeft() {
       </li>
     </ul>
   );
-}
+};
 
-function ProductList() {
+const ProductList = () => {
   const [viewType, setViewType] = useState({ grid: true });
+  const { productList, loadingProducts } = useFetchProductList();
 
   function changeViewType() {
     setViewType({
@@ -108,7 +110,7 @@ function ProductList() {
   return (
     <div className="container mt-5 py-4 px-xl-5">
       <ScrollToTopOnMount />
-      <nav aria-label="breadcrumb" className="bg-custom-light rounded">
+      {/* <nav aria-label="breadcrumb" className="bg-custom-light rounded">
         <ol className="breadcrumb p-3 mb-0">
           <li className="breadcrumb-item">
             <Link
@@ -123,7 +125,7 @@ function ProductList() {
             Cases &amp; Covers
           </li>
         </ol>
-      </nav>
+      </nav> */}
 
       <div className="h-scroller d-block d-lg-none">
         <nav className="nav h-underline">
@@ -175,14 +177,14 @@ function ProductList() {
 
       <div className="row mb-4 mt-lg-3">
         <div className="d-none d-lg-block col-lg-3">
-          <div className="border rounded shadow-sm">
+          {/* <div className="border rounded shadow-sm">
             <FilterMenuLeft />
-          </div>
+          </div> */}
         </div>
-        <div className="col-lg-9">
+        <div className="col-lg-9 col-xl-12">
           <div className="d-flex flex-column h-100">
             <div className="row mb-3">
-              <div className="col-lg-3 d-none d-lg-block">
+              {/* <div className="col-lg-3 d-none d-lg-block">
                 <select
                   className="form-select"
                   aria-label="Default select example"
@@ -193,8 +195,8 @@ function ProductList() {
                   <option value="2">iPhone Xs</option>
                   <option value="3">iPhone 11</option>
                 </select>
-              </div>
-              <div className="col-lg-9 col-xl-5 offset-xl-4 d-flex flex-row">
+              </div> */}
+              <div className="col-lg-12 col-xl-12  d-flex flex-row">
                 <div className="input-group">
                   <input
                     className="form-control"
@@ -222,20 +224,36 @@ function ProductList() {
                 (viewType.grid ? "row-cols-xl-3" : "row-cols-xl-2")
               }
             >
-              {Array.from({ length: 10 }, (_, i) => {
-                if (viewType.grid) {
+              {!loadingProducts &&
+                Array.from(productList.article_markets, (v, k) => {
+                  if (viewType.grid) {
+                    return (
+                      <Product
+                        key={k}
+                        index={k}
+                        name={v.article_name_market}
+                        price={v.article_price}
+                        url={v.market_article_url}
+                        market={v.market_name}
+                      />
+                    );
+                  }
                   return (
-                    <Product key={i} percentOff={i % 2 === 0 ? 15 : null} />
+                    <ProductH
+                      key={k}
+                      index={k}
+                      name={v.article_name_market}
+                      price={v.article_price}
+                      url={v.market_article_url}
+                      market={v.market_name}
+                    />
                   );
-                }
-                return (
-                  <ProductH key={i} percentOff={i % 4 === 0 ? 15 : null} />
-                );
-              })}
+                })}
             </div>
             <div className="d-flex align-items-center mt-auto">
               <span className="text-muted small d-none d-md-inline">
-                Showing 10 of 100
+                Showing {!loadingProducts && productList.article_markets.length}{" "}
+                of {!loadingProducts && productList.article_markets.length}
               </span>
               <nav aria-label="Page navigation example" className="ms-auto">
                 <ul className="pagination my-0">
@@ -272,6 +290,6 @@ function ProductList() {
       </div>
     </div>
   );
-}
+};
 
 export default ProductList;
