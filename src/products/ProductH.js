@@ -1,6 +1,5 @@
 import Image from "../nillkin-case-1.jpg";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function ProductH(props) {
   return (
@@ -35,10 +34,9 @@ function ProductH(props) {
                   {props.price}
                 </span>
                 <div className="mt-auto d-flex">
-                  <button className="btn btn-outline-dark ms-auto">
-                    <FontAwesomeIcon icon={["fas", "cart-plus"]} />
-                    <a href={props.url}> Buy </a>
-                  </button>
+                  <a href={props.url} className="d-grid gap-2">
+                    <button className="btn btn-outline-dark ">Buy</button>
+                  </a>
                 </div>
               </div>
             </div>

@@ -1,5 +1,4 @@
-import { apiCall, API_URL } from "../shared";
-import { BaseProduct } from "../types";
+import { API_URL } from "../shared";
 
 const BASE_URL = `${API_URL}/markets`;
 

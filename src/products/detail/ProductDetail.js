@@ -86,13 +86,11 @@ function ProductDetail() {
 
               <div className="row g-3 mb-4">
                 <div className="col">
-                  <button className="btn btn-outline-dark py-2 w-100">
-                    <a
-                      href={productList.article_markets[id].market_article_url}
-                    >
+                  <a href={productList.article_markets[id].market_article_url}>
+                    <button className="btn btn-outline-dark py-2 w-100">
                       Buy now
-                    </a>
-                  </button>
+                    </button>
+                  </a>
                 </div>
               </div>
 

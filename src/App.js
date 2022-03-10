@@ -1,7 +1,6 @@
 import Template from "./template/Template";
 import ProductDetail from "./products/detail/ProductDetail";
 import { Switch, Route } from "react-router-dom";
-import Landing from "./landing/Landing";
 import ProductList from "./products/ProductList";
 
 function App() {

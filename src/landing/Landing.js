@@ -1,4 +1,3 @@
-import Banner from "./Banner";
 import FeatureProduct from "./FeatureProduct";
 import ScrollToTopOnMount from "../template/ScrollToTopOnMount";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

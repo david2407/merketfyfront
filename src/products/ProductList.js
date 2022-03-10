@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import Product from "./Product";
 import ProductH from "./ProductH";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ScrollToTopOnMount from "../template/ScrollToTopOnMount";
 import { useFetchProductList } from "../hooks";
+import "./style.css";
 
 const categories = [
   "All Products",
@@ -107,25 +108,16 @@ const ProductList = () => {
     });
   }
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <div className="container mt-5 py-4 px-xl-5">
       <ScrollToTopOnMount />
-      {/* <nav aria-label="breadcrumb" className="bg-custom-light rounded">
-        <ol className="breadcrumb p-3 mb-0">
-          <li className="breadcrumb-item">
-            <Link
-              className="text-decoration-none link-secondary"
-              to="/products"
-              replace
-            >
-              All Prodcuts
-            </Link>
-          </li>
-          <li className="breadcrumb-item active" aria-current="page">
-            Cases &amp; Covers
-          </li>
-        </ol>
-      </nav> */}
+
+      <div className="row">
+        <h4 className="col-4"> </h4>
+        <h4 className="col-6">Revisa, compara y compra</h4>
+      </div>
 
       <div className="h-scroller d-block d-lg-none">
         <nav className="nav h-underline">
@@ -176,26 +168,10 @@ const ProductList = () => {
       </div>
 
       <div className="row mb-4 mt-lg-3">
-        <div className="d-none d-lg-block col-lg-3">
-          {/* <div className="border rounded shadow-sm">
-            <FilterMenuLeft />
-          </div> */}
-        </div>
+        <div className="d-none d-lg-block col-lg-3"></div>
         <div className="col-lg-9 col-xl-12">
           <div className="d-flex flex-column h-100">
             <div className="row mb-3">
-              {/* <div className="col-lg-3 d-none d-lg-block">
-                <select
-                  className="form-select"
-                  aria-label="Default select example"
-                  defaultValue=""
-                >
-                  <option value="">All Models</option>
-                  <option value="1">iPhone X</option>
-                  <option value="2">iPhone Xs</option>
-                  <option value="3">iPhone 11</option>
-                </select>
-              </div> */}
               <div className="col-lg-12 col-xl-12  d-flex flex-row">
                 <div className="input-group">
                   <input
@@ -203,10 +179,8 @@ const ProductList = () => {
                     type="text"
                     placeholder="Search products..."
                     aria-label="search input"
+                    onChange={(event) => setSearchTerm(event.target.value)}
                   />
-                  <button className="btn btn-outline-dark">
-                    <FontAwesomeIcon icon={["fas", "search"]} />
-                  </button>
                 </div>
                 <button
                   className="btn btn-outline-dark ms-2 d-none d-lg-inline"
@@ -225,10 +199,29 @@ const ProductList = () => {
               }
             >
               {!loadingProducts &&
-                Array.from(productList.article_markets, (v, k) => {
-                  if (viewType.grid) {
+                Array.from(
+                  productList.article_markets.filter((val) =>
+                    searchTerm === ""
+                      ? val
+                      : val.article_name_market
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase()) && val
+                  ),
+                  (v, k) => {
+                    if (viewType.grid) {
+                      return (
+                        <Product
+                          key={k}
+                          index={k}
+                          name={v.article_name_market}
+                          price={v.article_price}
+                          url={v.market_article_url}
+                          market={v.market_name}
+                        />
+                      );
+                    }
                     return (
-                      <Product
+                      <ProductH
                         key={k}
                         index={k}
                         name={v.article_name_market}
@@ -238,17 +231,7 @@ const ProductList = () => {
                       />
                     );
                   }
-                  return (
-                    <ProductH
-                      key={k}
-                      index={k}
-                      name={v.article_name_market}
-                      price={v.article_price}
-                      url={v.market_article_url}
-                      market={v.market_name}
-                    />
-                  );
-                })}
+                )}
             </div>
             <div className="d-flex align-items-center mt-auto">
               <span className="text-muted small d-none d-md-inline">
